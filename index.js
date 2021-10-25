@@ -53,12 +53,12 @@ export function jsonFetchFactory({ cache = true, limit = true, ...fetchOptions }
   return (url, options = {}) => jsonFetch(url, { ...fetchOptions, options, fetch })
 }
 
-export function getFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
+export function getFetchFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
   const fetch = fetchFactory({ cache, limit })
   return (url, query, options = {}) => get(url, query, { ...fetchOptions, options, fetch })
 }
 
-export function postFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
+export function postFetchFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
   const fetch = fetchFactory({ cache, limit })
   return (url, body, options = {}) => post(url, body, { ...fetchOptions, options, fetch })
 }
