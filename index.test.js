@@ -1,16 +1,21 @@
 import { autotest } from "@tim-code/autotest"
-import { fetchFactoryGet, fetchFactoryPost } from "./index.js"
+import { powerFetchFactory } from "./index.js"
 
-autotest(fetchFactoryGet(), { name: "getFactory" })("https://httpbin.org/get")(
+autotest(powerFetchFactory(), { name: "getFactory" })("https://httpbin.org/get")(
   expect.objectContaining({ args: {} })
 )
 
-const getInput = { test: "1" }
-autotest(fetchFactoryGet(), { name: "getFactory" })("https://httpbin.org/get", getInput)(
-  expect.objectContaining({ args: getInput })
+const getInput = { query: { test: "1" } }
+autotest(powerFetchFactory(), { name: "getFactory args" })(
+  "https://httpbin.org/get",
+  getInput
+)(expect.objectContaining({ args: getInput.query }))
+
+const postInput = { body: { check: 1 } }
+autotest(powerFetchFactory(), { name: "postFactory" })("https://httpbin.org/post", postInput)(
+  expect.objectContaining({ json: postInput.body })
 )
 
-const postInput = { check: 1 }
-autotest(fetchFactoryPost(), { name: "postFactory" })("https://httpbin.org/post", postInput)(
-  expect.objectContaining({ json: postInput })
-)
+autotest(powerFetchFactory({ cache: false }), { name: "getFactory no cache" })(
+  "https://httpbin.org/get"
+)(expect.objectContaining({ args: {} }))

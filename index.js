@@ -1,4 +1,4 @@
-import { get, jsonFetch, post } from "@tim-code/json-fetch"
+import * as json from "@tim-code/json-fetch"
 import nodeFetch from "node-fetch"
 import { fetchBuilder, FileSystemCache } from "node-fetch-cache"
 import { pRateLimit } from "p-ratelimit"
@@ -9,13 +9,17 @@ const defaultLimitOptions = {
   rate: 120,
   concurrency: 6,
 }
+function createLimiter(limitOptions) {
+  limitOptions = typeof limitOptions === "object" ? limitOptions : {}
+  return pRateLimit({ ...defaultLimitOptions, limitOptions })
+}
+
 // only limit request if they are not cached
 class LimitedCache extends FileSystemCache {
   constructor({ limit, ...options } = {}) {
     super(options)
     if (limit) {
-      const limitOptions = typeof limit === "object" ? limit : {}
-      this.limiter = pRateLimit({ ...defaultLimitOptions, limitOptions })
+      this.limiter = createLimiter(limit)
     }
   }
 
@@ -35,30 +39,26 @@ const defaultCacheOptions = {
   ttl: 15 * 60 * 1000,
 }
 function fetchFactory({ cache, limit } = {}) {
-  let fetch = nodeFetch
-  if (cache || limit) {
+  if (cache) {
     const cacheOptions = cache && typeof cache === "object" ? cache : {}
-    if (!cache) {
-      cacheOptions.ttl = 0
-    }
-    fetch = fetchBuilder.withCache(
+    return fetchBuilder.withCache(
       new LimitedCache({ ...defaultCacheOptions, ...cacheOptions, limit })
     )
+  } else if (limit) {
+    const limiter = createLimiter(limit)
+    return (...args) => limiter(() => nodeFetch(...args))
   }
-  return fetch
+  return nodeFetch
 }
 
-export function fetchFactoryGeneric({ cache = true, limit = true, ...fetchOptions } = {}) {
+export function powerFetchFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
   const fetch = fetchFactory({ cache, limit })
-  return (url, options = {}) => jsonFetch(url, { ...fetchOptions, options, fetch })
-}
-
-export function fetchFactoryGet({ cache = true, limit = true, ...fetchOptions } = {}) {
-  const fetch = fetchFactory({ cache, limit })
-  return (url, query, options = {}) => get(url, query, { ...fetchOptions, options, fetch })
-}
-
-export function fetchFactoryPost({ cache = true, limit = true, ...fetchOptions } = {}) {
-  const fetch = fetchFactory({ cache, limit })
-  return (url, body, options = {}) => post(url, body, { ...fetchOptions, options, fetch })
+  return (url, { query, body, ...options } = {}) => {
+    options = { ...fetchOptions, options, fetch }
+    if (body) {
+      url = json.appendQueryParams(url, query)
+      return json.post(url, body, options)
+    }
+    return json.get(url, query, options)
+  }
 }
