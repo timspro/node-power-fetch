@@ -1,6 +1,6 @@
 {
   "name": "@tim-code/node-power-fetch",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
   "main": "./index.cjs",
   "exports": {
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@tim-code/json-fetch": "^0.1.0",
+    "jsonpath": "^1.1.1",
     "node-fetch": "^3.0.0",
     "node-fetch-cache": "^3.0.3",
     "p-ratelimit": "^1.0.1"

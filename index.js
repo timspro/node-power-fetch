@@ -1,4 +1,5 @@
 import * as json from "@tim-code/json-fetch"
+import jsonpath from "jsonpath"
 import nodeFetch from "node-fetch"
 import { fetchBuilder, FileSystemCache } from "node-fetch-cache"
 import { pRateLimit } from "p-ratelimit"
@@ -53,7 +54,16 @@ function fetchFactory({ cache, limit } = {}) {
 
 export function powerFetchFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
   const fetch = fetchFactory({ cache, limit })
-  return (url, options) => json.request(url, { ...fetchOptions, ...options, fetch })
+  return async (url, { selector, ...options } = {}) => {
+    const result = await json.request(url, { ...fetchOptions, ...options, fetch })
+    if (selector) {
+      if (Array.isArray(selector)) {
+        selector = jsonpath.stringify(selector)
+      }
+      return jsonpath.query(result, selector)
+    }
+    return result
+  }
 }
 
 export const powerFetch = powerFetchFactory()
