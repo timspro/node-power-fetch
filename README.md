@@ -18,8 +18,12 @@ Instead of `true`, it is possible to pass an options object for either `cache` (
 
 ## Special Parameters to powerFetch()
 
-query: appends the object value to the query string of the URL
+`selector`: a JSON path selector to apply to the result; always produces an array (https://www.npmjs.com/package/jsonpath)
 
-body: stringifies and sets headers to post the object value
+The following come from https://www.npmjs.com/package/@tim-code/json-fetch:
 
-onError: https://www.npmjs.com/package/@tim-code/json-fetch
+`query`: appends the object value to the query string of the URL
+
+`body`: stringifies and sets headers to post the object value
+
+`onError`: replace error behavior

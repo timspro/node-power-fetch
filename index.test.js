@@ -20,8 +20,9 @@ autotest(powerFetchFactory({ cache: false }), { name: "getFactory no cache" })(
   "https://httpbin.org/get"
 )(expect.objectContaining({ args: {} }))
 
-const selectorInput = { selector: "$.json.check" }
+const newPostInput = { body: { check: [1] } }
+const selectorInput = { selector: "$.json.check.*" }
 autotest(powerFetchFactory(), { name: "post selector" })("https://httpbin.org/post", {
-  ...postInput,
+  ...newPostInput,
   ...selectorInput,
 })([1])
