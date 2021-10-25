@@ -53,12 +53,7 @@ function fetchFactory({ cache, limit } = {}) {
 
 export function powerFetchFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
   const fetch = fetchFactory({ cache, limit })
-  return (url, { query, body, ...options } = {}) => {
-    options = { ...fetchOptions, options, fetch }
-    if (body) {
-      url = json.appendQueryParams(url, query)
-      return json.post(url, body, options)
-    }
-    return json.get(url, query, options)
-  }
+  return (url, options) => json.request(url, { ...fetchOptions, ...options, fetch })
 }
+
+export const powerFetch = powerFetchFactory()
