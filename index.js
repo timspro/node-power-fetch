@@ -55,7 +55,7 @@ function fetchFactory({ cache, limit } = {}) {
 export function powerFetchFactory({ cache = true, limit = true, ...fetchOptions } = {}) {
   const fetch = fetchFactory({ cache, limit })
   return async (url, { selector, ...options } = {}) => {
-    const result = await json.multirequest(url, { ...fetchOptions, ...options, fetch })
+    const result = await json.request(url, { ...fetchOptions, ...options, fetch })
     if (selector) {
       if (Array.isArray(selector)) {
         selector = jsonpath.stringify(selector)
