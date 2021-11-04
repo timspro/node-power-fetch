@@ -15,15 +15,15 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "@tim-code/autotest": "^0.8.1",
-    "@tim-code/eslint-config": "^0.2.2",
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@tim-code/autotest": "^0.8.2",
+    "@tim-code/eslint-config": "^0.5.5",
     "jest": "^27.3.1"
   },
   "dependencies": {
-    "@tim-code/json-fetch": "^0.3.2",
+    "@tim-code/json-fetch": "^0.3.5",
     "jsonpath": "^1.1.1",
     "node-fetch": "^3.0.0",
     "node-fetch-cache": "^3.0.3",
@@ -34,9 +34,6 @@
   },
   "eslintConfig": {
     "extends": "@tim-code",
-    "env": {
-      "jest": true
-    },
     "ignorePatterns": "index.cjs"
   },
   "babel": {
