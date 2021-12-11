@@ -17,15 +17,15 @@
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.0",
-    "@tim-code/autotest": "^0.9.0",
-    "@tim-code/eslint-config": "^0.5.6",
-    "jest": "^27.3.1"
+    "@babel/preset-env": "^7.16.4",
+    "@tim-code/autotest": "^0.10.1",
+    "@tim-code/eslint-config": "^0.5.10",
+    "jest": "^27.4.0"
   },
   "dependencies": {
-    "@tim-code/json-fetch": "^0.4.0",
+    "@tim-code/json-fetch": "^0.4.1",
     "jsonpath": "^1.1.1",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^3.1.0",
     "node-fetch-cache": "^3.0.3",
     "p-ratelimit": "^1.0.1"
   },
@@ -36,6 +36,10 @@
     "extends": "@tim-code",
     "ignorePatterns": "index.cjs"
   },
+  "files": [
+    "index.js",
+    "index.cjs"
+  ],
   "babel": {
     "presets": [
       [
